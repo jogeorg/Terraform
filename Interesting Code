@@ -26,7 +26,8 @@ data "external" "switch_to_custom_dns" {
 }
 
 resource "azurerm_virtual_machine_extension" "linux_paw_extension" {
-  name                 = "${var.linux_paw_hostname}-ces"
+name = "${replace(format("scripts%s", lower(replace("paw", "/[[:^alnum:]]/", ""))), "/(.{0,13})(.*)/", "$1")}${random_id.dedup.hex}"
+
   depends_on           = []
   virtual_machine_id   = module.linux_paw.paw_host_id
   publisher            = "Microsoft.Azure.Extensions"
