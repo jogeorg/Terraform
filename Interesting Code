@@ -25,6 +25,10 @@ data "external" "switch_to_custom_dns" {
   }
 }
 
+resource "random_id" "dedup" {
+ byte_length = 2
+}
+
 resource "azurerm_virtual_machine_extension" "linux_paw_extension" {
 name = "${replace(format("scripts%s", lower(replace("paw", "/[[:^alnum:]]/", ""))), "/(.{0,13})(.*)/", "$1")}${random_id.dedup.hex}"
 
